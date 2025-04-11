@@ -101,13 +101,13 @@
         
         <form id="contact-form">
             <div class="form-group">
-                <label for="user_name">お名前</label>
-                <input type="text" id="user_name" name="user_name" required>
+                <label for="name">お名前</label>
+                <input type="text" id="name" name="name" required>
             </div>
 
             <div class="form-group">
-                <label for="user_email">メールアドレス</label>
-                <input type="email" id="user_email" name="user_email" required>
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" name="email" required>
             </div>
             
             <div class="form-group">
@@ -131,11 +131,12 @@
     </div>
 
     <script type="text/javascript">
-        // ページ読み込み時に実行
-        document.addEventListener('DOMContentLoaded', function() {
-            // EmailJSの初期化
+        // EmailJSの初期化
+        (function() {
             emailjs.init("wXw2U4ChSDmvbS5sC");
-            
+        })();
+        
+        document.addEventListener('DOMContentLoaded', function() {
             var contactForm = document.getElementById('contact-form');
             var submitButton = document.getElementById('submit-button');
             var loadingIndicator = document.getElementById('loading');
@@ -151,27 +152,26 @@
                 loadingIndicator.style.display = 'block';
                 errorMessage.style.display = 'none';
                 
-                // テンプレートパラメータを作成
-                // 注意: これらの名前はEmailJSのテンプレートの変数名と一致する必要があります
+                // メール送信用のパラメータ
                 var templateParams = {
-                    user_name: document.getElementById('user_name').value,
-                    user_email: document.getElementById('user_email').value,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
                     message: document.getElementById('message').value,
-                    reply_to: document.getElementById('user_email').value // 返信先として必要
+                    to_email: 'yuusaku20041019@gmail.com'
                 };
                 
-                console.log("送信パラメータ:", templateParams);
+                console.log("送信します:", templateParams);
                 
-                // EmailJSでメール送信
-                emailjs.send('service_pflsmz9', 'template_hamaq9b', templateParams)
+                // 新しいサービスIDを使用
+                emailjs.send('service_8ongzji', 'template_hamaq9b', templateParams)
                     .then(function(response) {
-                        console.log('送信成功:', response);
+                        console.log('SUCCESS!', response.status, response.text);
                         contactForm.reset();
                         contactForm.style.display = 'none';
                         successMessage.style.display = 'block';
                     })
                     .catch(function(error) {
-                        console.error('送信失敗:', error);
+                        console.error('FAILED...', error);
                         errorMessage.style.display = 'block';
                         errorDetails.textContent = '詳細エラー: ' + (error.text || error.message || '不明なエラー');
                         submitButton.disabled = false;
