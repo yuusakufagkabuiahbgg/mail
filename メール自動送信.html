@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お問い合わせフォーム</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            color: #c0392b;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>お問い合わせ</h1>
+        
+        <form id="contactForm" action="https://formsubmit.co/yuusaku20041019@gmail.com" method="POST">
+            <!-- FormSubmit用の設定 -->
+            <input type="hidden" name="_subject" value="お問い合わせが届きました">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_next" value=""> <!-- 送信後のリダイレクト先URLを設定できます -->
+            
+            <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">お問い合わせ内容</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            
+            <button type="submit">送信する</button>
+        </form>
+        
+        <div id="successMessage" class="success-message">
+            お問い合わせを送信しました。ありがとうございます。
+        </div>
+        
+        <div id="errorMessage" class="error-message">
+            送信に失敗しました。後ほど再度お試しください。
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            // フォーム送信時の処理
+            // FormSubmitが処理するため、ここでは追加の処理は必要ありません
+            // FormSubmitがフォームを処理した後、_nextパラメータで指定したURLにリダイレクトします
+            
+            // 必要に応じて送信前の検証などを追加できます
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            if (!email || !message) {
+                alert('すべての必須項目を入力してください。');
+                event.preventDefault();
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
