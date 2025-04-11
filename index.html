@@ -80,13 +80,15 @@
     <div class="container">
         <h1>お問い合わせ</h1>
         
-        <form id="contactForm" action="https://formsubmit.co/yuusaku20041019@gmail.com" method="POST">
+        <form id="contactForm" action="https://formsubmit.co/yuusaku20041019@gmail.com" method="POST" onsubmit="localStorage.setItem('formSubmitted', 'true');">
             <!-- FormSubmit用の設定 -->
             <input type="hidden" name="_subject" value="お問い合わせが届きました">
-            <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_language" value="ja">
+            <input type="hidden" name="_format" value="plain">
             <input type="hidden" name="_next" value="thank-you.html"> <!-- 送信後のリダイレクト先URL -->
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_autoresponse" value="お問い合わせありがとうございます。メッセージを受け付けました。">
             
             <div class="form-group">
                 <label for="email">メールアドレス</label>
