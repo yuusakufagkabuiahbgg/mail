@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お問い合わせフォーム</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -66,12 +67,23 @@
             color: #27ae60;
             font-weight: bold;
             margin-top: 20px;
+            padding: 15px;
+            background-color: #f0fff0;
+            border-radius: 4px;
         }
         .error-message {
             display: none;
             text-align: center;
             color: #c0392b;
             font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff0f0;
+            border-radius: 4px;
+        }
+        .loading {
+            display: none;
+            text-align: center;
             margin-top: 20px;
         }
     </style>
@@ -80,16 +92,7 @@
     <div class="container">
         <h1>お問い合わせ</h1>
         
-        <form id="contactForm" action="https://formsubmit.co/yuusaku20041019@gmail.com" method="POST" onsubmit="localStorage.setItem('formSubmitted', 'true');">
-            <!-- FormSubmit用の設定 -->
-            <input type="hidden" name="_subject" value="お問い合わせが届きました">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_language" value="ja">
-            <input type="hidden" name="_format" value="plain">
-            <input type="hidden" name="_next" value="thank-you.html"> <!-- 送信後のリダイレクト先URL -->
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_autoresponse" value="お問い合わせありがとうございます。メッセージを受け付けました。">
-            
+        <form id="contactForm">
             <div class="form-group">
                 <label for="email">メールアドレス</label>
                 <input type="email" id="email" name="email" required>
@@ -100,7 +103,9 @@
                 <textarea id="message" name="message" required></textarea>
             </div>
             
-            <button type="submit">送信する</button>
+            <button type="submit" id="submitButton">送信する</button>
+            
+            <div id="loading" class="loading">送信中...</div>
         </form>
         
         <div id="successMessage" class="success-message">
@@ -113,21 +118,36 @@
     </div>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(event) {
-            // フォーム送信時の処理
-            // FormSubmitが処理するため、ここでは追加の処理は必要ありません
-            // FormSubmitがフォームを処理した後、_nextパラメータで指定したURLにリダイレクトします
-            
-            // 必要に応じて送信前の検証などを追加できます
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            if (!email || !message) {
-                alert('すべての必須項目を入力してください。');
+        (function() {
+            // EmailJS の初期化
+            emailjs.init("wXw2U4ChSDmvbS5sC"); // EmailJSのパブリックキー
+
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
                 event.preventDefault();
-                return false;
-            }
-        });
+                
+                // 送信ボタンを無効化
+                document.getElementById('submitButton').disabled = true;
+                document.getElementById('loading').style.display = 'block';
+                
+                // EmailJSでのメール送信
+                emailjs.send("service_pflsmz9", "template_hamaq9b", {
+                    email: document.getElementById('email').value,
+                    message: document.getElementById('message').value
+                })
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    document.getElementById('contactForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    document.getElementById('errorMessage').style.display = 'block';
+                    document.getElementById('submitButton').disabled = false;
+                })
+                .finally(function() {
+                    document.getElementById('loading').style.display = 'none';
+                });
+            });
+        })();
     </script>
 </body>
 </html>
