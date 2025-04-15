@@ -35,13 +35,17 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
             box-sizing: border-box;
+        }
+        select {
+            height: 42px;
+            background-color: white;
         }
         textarea {
             min-height: 150px;
@@ -111,7 +115,17 @@
             </div>
             
             <div class="form-group">
-                <label for="message">お問い合わせ内容</label>
+                <label for="inquiry-type">お問い合わせ内容</label>
+                <select id="inquiry-type" name="inquiry-type" required>
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="求人">求人</option>
+                    <option value="アルバイト">アルバイト</option>
+                    <option value="その他">その他</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">詳細メッセージ</label>
                 <textarea id="message" name="message" required></textarea>
             </div>
             
@@ -156,6 +170,7 @@
                 var templateParams = {
                     name: document.getElementById('name').value,
                     email: document.getElementById('email').value,
+                    inquiry_type: document.getElementById('inquiry-type').value,
                     message: document.getElementById('message').value,
                     to_email: 'yuusaku20041019@gmail.com'
                 };
